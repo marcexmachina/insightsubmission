@@ -18,7 +18,7 @@
 		98446D792151151A000E1E63 /* FlickrIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98446D782151151A000E1E63 /* FlickrIntegrationTests.swift */; };
 		984F1559215257C90073C07A /* HomeScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984F1558215257C90073C07A /* HomeScreenViewModel.swift */; };
 		984F155B215268510073C07A /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984F155A215268510073C07A /* PhotoCollectionViewCell.swift */; };
-		984F155D21526B5F0073C07A /* PhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984F155C21526B5F0073C07A /* PhotoCellViewModel.swift */; };
+		9866B5B6215667AF00E8FB18 /* PhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9866B5B5215667AF00E8FB18 /* PhotoCellViewModel.swift */; };
 		98A9BC98214FC895004154F5 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A9BC97214FC895004154F5 /* Photo.swift */; };
 		98A9BC9B214FCF48004154F5 /* FlickrError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A9BC9A214FCF48004154F5 /* FlickrError.swift */; };
 		98A9BC9D214FE3CD004154F5 /* FlickrPhotosResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A9BC9C214FE3CD004154F5 /* FlickrPhotosResult.swift */; };
@@ -63,7 +63,7 @@
 		98446D782151151A000E1E63 /* FlickrIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrIntegrationTests.swift; sourceTree = "<group>"; };
 		984F1558215257C90073C07A /* HomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewModel.swift; sourceTree = "<group>"; };
 		984F155A215268510073C07A /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
-		984F155C21526B5F0073C07A /* PhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCellViewModel.swift; sourceTree = "<group>"; };
+		9866B5B5215667AF00E8FB18 /* PhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCellViewModel.swift; sourceTree = "<group>"; };
 		98A9BC97214FC895004154F5 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		98A9BC9A214FCF48004154F5 /* FlickrError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrError.swift; sourceTree = "<group>"; };
 		98A9BC9C214FE3CD004154F5 /* FlickrPhotosResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrPhotosResult.swift; sourceTree = "<group>"; };
@@ -174,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				984F1558215257C90073C07A /* HomeScreenViewModel.swift */,
+				9866B5B5215667AF00E8FB18 /* PhotoCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -216,7 +217,6 @@
 			children = (
 				98239406214E577D0075BBA0 /* HomeCollectionViewController.swift */,
 				984F155A215268510073C07A /* PhotoCollectionViewCell.swift */,
-				984F155C21526B5F0073C07A /* PhotoCellViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -396,7 +396,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				984F155D21526B5F0073C07A /* PhotoCellViewModel.swift in Sources */,
+				9866B5B6215667AF00E8FB18 /* PhotoCellViewModel.swift in Sources */,
 				98D5CA8A2156496500987F75 /* ImageCache.swift in Sources */,
 				98D5CA8421562B1A00987F75 /* PhotoOperationsManager.swift in Sources */,
 				984F1559215257C90073C07A /* HomeScreenViewModel.swift in Sources */,
@@ -513,6 +513,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -566,6 +567,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

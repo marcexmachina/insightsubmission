@@ -30,7 +30,7 @@ class HomeScreenViewModel {
     // MARK - Methods
 
     func cellViewModel(for photo: Photo) -> PhotoCellViewModel {
-        return PhotoCellViewModel(photo: photo, networkManager: networkManager)
+        return PhotoCellViewModel(photo: photo)
     }
 
     // MARK: - Private methods
