@@ -11,9 +11,9 @@ import XCTest
 
 class FlickrAPIClientTests: XCTestCase {
 
-    class MockURLSession: URLSessionProtocol {
-
-    }
+//    class MockURLSession: URLSessionProtocol {
+//
+//    }
 
     var sut: NetworkManagerProtocol!
     
@@ -28,7 +28,7 @@ class FlickrAPIClientTests: XCTestCase {
     }
     
     func testUrlString() {
-        let expected = "https://\(Constants.Flickr.baseURL)\(Constants.Flickr.path)?method=\(APIMethod.search.rawValue)&text=test&format=json&api_key=\(Constants.Flickr.apiKey)&nojsoncallback=1"
+        let expected = "https://\(Constants.Flickr.baseURL)\(Constants.Flickr.path)?method=\(APIMethod.search.rawValue)&text=test&format=json&api_key=\(Constants.Flickr.apiKey)&nojsoncallback=1&extras=\(Constants.Flickr.Extras.asString())"
         let url = sut.url(for: "test")
         XCTAssert(url.absoluteString == expected, "URL for search with text is not correct")
     }

@@ -11,11 +11,13 @@ import Foundation
 protocol NetworkManagerProtocol {
     init(session: URLSession)
     func getPhotos(with text: String, completion: @escaping (Result<FlickrPhotosResult>) -> ())
+    func startDownload(for photo: Photo, at indexPath: IndexPath, completion: @escaping ()->())
     func url(for text: String) -> URL
 }
 
 struct FlickrAPIClient: NetworkManagerProtocol {
     private let session: URLSession
+    let operationsManager = PhotosOperationsManager()
 
     init(session: URLSession) {
         self.session = session
@@ -45,7 +47,25 @@ struct FlickrAPIClient: NetworkManagerProtocol {
                 // TODO: NSLog
                 completion(.error(error))
             }
-        }.resume()
+            }.resume()
+    }
+
+    func startDownload(for photo: Photo, at indexPath: IndexPath, completion: @escaping ()->()) {
+        guard operationsManager.operationsInProgress[indexPath] == nil else { return }
+
+        let downloadOperation = ImageDownloadOperation(photo: photo)
+
+        downloadOperation.completionBlock = {
+            if downloadOperation.isCancelled { return }
+
+            DispatchQueue.main.async {
+                self.operationsManager.operationsInProgress.removeValue(forKey: indexPath)
+                completion()
+            }
+        }
+        
+        self.operationsManager.operationsInProgress[indexPath] = downloadOperation
+        self.operationsManager.downloadQueue.addOperation(downloadOperation)
     }
 }
 
@@ -61,12 +81,8 @@ extension NetworkManagerProtocol {
         let formatQueryItem = URLQueryItem(name: "format", value: Constants.Flickr.format)
         let apiKeyQueryItem = URLQueryItem(name: "api_key", value: Constants.Flickr.apiKey)
         let jsonCallback = URLQueryItem(name: "nojsoncallback", value: Constants.Flickr.JSONCallback)
-        let extras = URLQueryItem(name: "extras", value: extraURLParameters())
+        let extras = URLQueryItem(name: "extras", value: Constants.Flickr.Extras.asString())
         components.queryItems = [methodQueryItem, textQueryItem, formatQueryItem, apiKeyQueryItem, jsonCallback, extras]
         return components.url!
-    }
-
-    private func extraURLParameters() -> String {
-        return "description,date_upload,tags,o_dims,url_q,url_o"
     }
 }

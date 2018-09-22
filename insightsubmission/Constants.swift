@@ -17,5 +17,26 @@ struct Constants {
         static let format = "json"
         static let JSONCallback = "1"
 //        static let secret = "f1e4b232ec4e6134"
+
+        enum Extras: String {
+            case description
+            case date_upload
+            case tags
+            case o_dims
+            case url_q
+            case url_o
+
+            private static let allValues = [description, date_upload, tags, o_dims, url_q, url_o]
+
+
+            /// Returns a comma separated list of extras, stripping the last comma from the `String`
+            ///
+            /// - Returns: extras
+            static func asString() -> String {
+                return String(Extras.allValues.reduce("") { result, extra in
+                    result.appending("\(extra),")
+                }.dropLast())
+            }
+        }
     }
 }
