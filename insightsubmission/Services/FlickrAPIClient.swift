@@ -80,9 +80,10 @@ extension NetworkManagerProtocol {
         let textQueryItem = URLQueryItem(name: "text", value: text)
         let formatQueryItem = URLQueryItem(name: "format", value: Constants.Flickr.format)
         let apiKeyQueryItem = URLQueryItem(name: "api_key", value: Constants.Flickr.apiKey)
-        let jsonCallback = URLQueryItem(name: "nojsoncallback", value: Constants.Flickr.JSONCallback)
+        let jsonCallbackQueryItem = URLQueryItem(name: "nojsoncallback", value: Constants.Flickr.JSONCallback)
+        let safeSearchQueryItem = URLQueryItem(name: "safe_search", value: Constants.Flickr.safeSearch)
         let extras = URLQueryItem(name: "extras", value: Constants.Flickr.Extras.asString())
-        components.queryItems = [methodQueryItem, textQueryItem, formatQueryItem, apiKeyQueryItem, jsonCallback, extras]
+        components.queryItems = [methodQueryItem, textQueryItem, formatQueryItem, apiKeyQueryItem, jsonCallbackQueryItem, safeSearchQueryItem, extras]
         return components.url!
     }
 }
