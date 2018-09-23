@@ -11,7 +11,7 @@ import UIKit
 class HomeCollectionViewController: UIViewController {
 
     private let networkManager: NetworkManagerProtocol!
-    private let viewModel: HomeScreenViewModel!
+    private let viewModel: HomeCollectionViewModel!
 
     let collectionView: UICollectionView!
     let searchBar: UISearchBar!
@@ -20,7 +20,7 @@ class HomeCollectionViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         networkManager = FlickrAPIClient(session: URLSession.shared)
-        viewModel = HomeScreenViewModel(networkManager: networkManager)
+        viewModel = HomeCollectionViewModel(networkManager: networkManager)
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 150, height: 150)
         layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
@@ -42,10 +42,6 @@ class HomeCollectionViewController: UIViewController {
     private func bindViewModel() {
         viewModel.images.bind(to: collectionView) { array, indexPath, collectionView in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PhotoCollectionViewCell
-//
-//            repository.photo
-//                .bind(to: cell.avatarImageView)
-//                .dispose(in: cell.onReuseBag)
 
             let photo = array[indexPath.item]
             let cellViewModel = self.viewModel.cellViewModel(for: photo)
@@ -53,14 +49,15 @@ class HomeCollectionViewController: UIViewController {
 
             // Check cache for image, otherwise start download
             let key = photo.thumbnailUrl()
-            if let cachedData = ImageCache.shared.imageData(forKey: key) {
-                if let image = UIImage(data: cachedData) {
-                    cellViewModel.image.value = image
+
+            ImageCache.shared.imageData(key: key) { data in
+                guard let data = data, let image = UIImage(data: data) else {
+                    self.networkManager.startDownload(for: photo, at: indexPath) { [unowned self] in
+                        self.collectionView.reloadItems(at: [indexPath])
+                    }
+                    return
                 }
-            } else {
-                self.networkManager.startDownload(for: photo, at: indexPath) { [unowned self] in
-                    self.collectionView.reloadItems(at: [indexPath])
-                }
+                cellViewModel.image.value = image
             }
             return cell
         }
@@ -96,11 +93,14 @@ extension HomeCollectionViewController: UICollectionViewDataSourcePrefetching {
             let photo = viewModel.images[indexPath.row]
             let key = photo.thumbnailUrl()
 
-            // Return early if image is already cached
-            guard ImageCache.shared.imageData(forKey: key) == nil else { return }
+            ImageCache.shared.imageData(key: key) { data in
+                // Exit early if image is already cached
+                guard data == nil else { return }
 
-            self.networkManager.startDownload(for: photo, at: indexPath) { [unowned self] in
-                self.collectionView.reloadItems(at: [indexPath])
+                // Start download of image
+                self.networkManager.startDownload(for: photo, at: indexPath) { [unowned self] in
+                    self.collectionView.reloadItems(at: [indexPath])
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 //
-//  HomeScreenViewModel.swift
+//  HomeCollectionViewModel.swift
 //  insightsubmission
 //
 //  Created by Marc O'Neill on 19/09/2018.
@@ -9,7 +9,7 @@
 import Foundation
 import Bond
 
-class HomeScreenViewModel {
+class HomeCollectionViewModel {
     var images = MutableObservableArray<Photo>([])
     var searchString = Observable<String?>("")
     let networkManager: NetworkManagerProtocol!
