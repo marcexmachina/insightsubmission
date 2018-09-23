@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+/// ImageCache singleton
 final class ImageCache {
     static let shared = ImageCache()
 
@@ -31,6 +33,13 @@ final class ImageCache {
         }
     }
 
+
+    /// Cache data with supplied url string
+    /// caches data both in-memory and on-disk
+    ///
+    /// - Parameters:
+    ///   - key: url string
+    ///   - imageData: data to cache
     func cache(key: String, imageData: Data) {
         queue.async {
             let fileName = self.fileName(for: key)
@@ -49,6 +58,15 @@ final class ImageCache {
         }
     }
 
+
+    /// Retrieves data from cache for url string
+    /// First checks if data is in-memory cache
+    /// Then checks on-disk cache
+    /// calls completion with nil if no data found
+    ///
+    /// - Parameters:
+    ///   - key: url string
+    ///   - completion: completion
     func imageData(key: String, completion: @escaping (Data?) -> ()) {
         queue.async {
             let fileKey = self.fileName(for: key)
@@ -71,6 +89,12 @@ final class ImageCache {
         }
     }
 
+
+    /// Retrieve data from in-memory cache
+    ///
+    /// - Parameters:
+    ///   - key: url string
+    ///   - completion: completion
     func imageDataFromMemory(for key: String, completion: @escaping (Data?) -> ()) {
         queue.async {
             let fileName = self.fileName(for: key)
@@ -86,6 +110,12 @@ final class ImageCache {
         }
     }
 
+
+    /// Retrieve data from on-disk cache
+    ///
+    /// - Parameters:
+    ///   - key: url string
+    ///   - completion: completion
     func imageDataFromDisk(for key: String, completion: @escaping (Data?) -> ()) {
         queue.async {
             let path = self.filePath(for: key)
@@ -102,11 +132,13 @@ final class ImageCache {
     }
 
     func removeAllObjects() {
-        self.imageCache.removeAllObjects()
-        let urls = try? self.fileManager.contentsOfDirectory(at: self.imageCacheUrl, includingPropertiesForKeys: nil, options: [])
-        urls?.forEach({ (url) in
-            try? self.fileManager.removeItem(at: url)
-        })
+        queue.async {
+            self.imageCache.removeAllObjects()
+            let urls = try? self.fileManager.contentsOfDirectory(at: self.imageCacheUrl, includingPropertiesForKeys: nil, options: [])
+            urls?.forEach { url in
+                try? self.fileManager.removeItem(at: url)
+            }
+        }
     }
 
     // MARK: - Private Methods
