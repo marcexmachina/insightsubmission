@@ -14,6 +14,11 @@ enum PhotoState {
     case failed
 }
 
+enum Size: String {
+    case largeSquare = "url_q"
+    case medium = "url_m"
+}
+
 struct Photo {
     let id: String
     let owner: String
@@ -24,8 +29,8 @@ struct Photo {
     let isPublic: Bool
     let isFriend: Bool
     let isFamily: Bool
-    let urlOriginal: String?
-    let urlThumbnail: String?
+    let urlLargeSquare: String?
+    let urlMedium: String?
     let heightOriginal: String?
     let widthOriginal: String?
     let dateUpload: String
@@ -43,8 +48,8 @@ struct Photo {
         case isPublic = "ispublic"
         case isFriend = "isfriend"
         case isFamily = "isfamily"
-        case urlOriginal = "url_o"
-        case urlThumbnail = "url_q"
+        case urlLargeSquare = "url_q"
+        case urlMedium = "url_m"
         case heightOriginal = "height_o"
         case widthOriginal = "width_o"
         case dateUpload = "dateupload"
@@ -55,13 +60,8 @@ struct Photo {
         state = newValue
     }
 
-    func thumbnailUrl() -> String {
-        if let url = self.urlThumbnail {
-            return url
-        } else if let originalUrl = urlOriginal {
-            return originalUrl
-        }
-        return  ""
+    func thumbnailUrl() -> String? {
+        return self.urlLargeSquare ?? self.urlMedium
     }
 }
 
@@ -77,8 +77,8 @@ extension Photo: Decodable {
         isPublic = try container.decode(Int.self, forKey: .isPublic) == 1 ? true : false
         isFriend = try container.decode(Int.self, forKey: .isFriend) == 1 ? true : false
         isFamily = try container.decode(Int.self, forKey: .isFamily) == 1 ? true : false
-        urlOriginal = try container.decodeIfPresent(String.self, forKey: .urlOriginal)
-        urlThumbnail = try container.decodeIfPresent(String.self, forKey: .urlThumbnail)
+        urlLargeSquare = try container.decodeIfPresent(String.self, forKey: .urlLargeSquare)
+        urlMedium = try container.decodeIfPresent(String.self, forKey: .urlMedium)
         heightOriginal = try container.decodeIfPresent(String.self, forKey: .heightOriginal)
         widthOriginal = try container.decodeIfPresent(String.self, forKey: .widthOriginal)
         dateUpload = try container.decode(String.self, forKey: .dateUpload)

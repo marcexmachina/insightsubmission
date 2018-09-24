@@ -10,19 +10,27 @@ import Foundation
 
 class ImageDownloadOperation: Operation {
     var photo: Photo
+    var size: Size
 
-    init(photo: Photo) {
+    init(photo: Photo, size: Size) {
         self.photo = photo
+        self.size = size
     }
 
     override func main() {
         if isCancelled { return }
 
-        guard let urlString = photo.urlThumbnail ?? photo.urlOriginal,
-            let url = URL(string: urlString),
-            let data = try? Data(contentsOf: url) else {
-                return
+        var urlString: String
+
+        switch size {
+        case .largeSquare:
+            urlString = photo.thumbnailUrl() ?? ""
+        case .medium:
+            urlString = photo.urlMedium ?? photo.urlLargeSquare ?? ""
         }
+        
+        guard let url = URL(string: urlString),
+            let data = try? Data(contentsOf: url) else { return }
 
         if isCancelled { return }
 

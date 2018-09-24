@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 /// ImageCache singleton
 final class ImageCache {
     static let shared = ImageCache()
@@ -33,7 +32,6 @@ final class ImageCache {
         }
     }
 
-
     /// Cache data with supplied url string
     /// caches data both in-memory and on-disk
     ///
@@ -57,7 +55,6 @@ final class ImageCache {
             }
         }
     }
-
 
     /// Retrieves data from cache for url string
     /// First checks if data is in-memory cache
@@ -89,7 +86,6 @@ final class ImageCache {
         }
     }
 
-
     /// Retrieve data from in-memory cache
     ///
     /// - Parameters:
@@ -109,7 +105,6 @@ final class ImageCache {
             }
         }
     }
-
 
     /// Retrieve data from on-disk cache
     ///

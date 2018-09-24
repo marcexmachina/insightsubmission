@@ -26,8 +26,9 @@ struct Constants {
             case o_dims
             case url_q
             case url_o
+            case url_m
 
-            private static let allValues = [description, date_upload, tags, o_dims, url_q, url_o]
+            private static let allValues = [description, date_upload, tags, o_dims, url_q, url_o, url_m]
 
 
             /// Returns a comma separated list of extras, stripping the last comma from the `String`

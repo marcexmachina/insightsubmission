@@ -12,6 +12,7 @@ import XCTest
 class FlickrAPIClientTests: XCTestCase {
 
     var sut: NetworkManagerProtocol!
+    let baseUrl = "https://\(Constants.Flickr.baseURL)\(Constants.Flickr.path)?method=\(APIMethod.search.rawValue)&format=json&api_key=\(Constants.Flickr.apiKey)&nojsoncallback=1&safe_search=1&extras=\(Constants.Flickr.Extras.asString())"
     
     override func setUp() {
         super.setUp()
@@ -23,10 +24,16 @@ class FlickrAPIClientTests: XCTestCase {
         super.tearDown()
     }
     
-    func testUrlString() {
-        let expected = "https://\(Constants.Flickr.baseURL)\(Constants.Flickr.path)?method=\(APIMethod.search.rawValue)&text=test&format=json&api_key=\(Constants.Flickr.apiKey)&nojsoncallback=1&safe_search=1&extras=\(Constants.Flickr.Extras.asString())"
+    func testTextQueryUrlString() {
+        let expected = baseUrl.appending("&text=test")
         let url = sut.url(for: "test")
         XCTAssert(url.absoluteString == expected, "URL for search with text is not correct")
+    }
+
+    func testLocationQueryUrlString() {
+        let expected = baseUrl.appending("&lat=123.0&lon=123.0")
+        let url = sut.url(latitude: 123.0, longitude: 123.0)
+        XCTAssert(url.absoluteString == expected, "URL for search with coordinates is not correct")
     }
     
 }

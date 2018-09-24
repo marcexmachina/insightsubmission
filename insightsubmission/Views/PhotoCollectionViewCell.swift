@@ -24,7 +24,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     func configure(with viewModel: PhotoCellViewModel) {
         self.viewModel = viewModel
         addSubview(imageView)
-        self.backgroundColor = .white
+        backgroundColor = .white
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true

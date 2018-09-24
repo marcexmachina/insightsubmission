@@ -11,9 +11,15 @@ import Bond
 
 struct PhotoCellViewModel {
     private let photo: Photo
+    private let networkManager: NetworkManagerProtocol!
     let image = Observable<UIImage?>(nil)
 
-    init(photo: Photo) {
+    init(photo: Photo, networkManager: NetworkManagerProtocol) {
         self.photo = photo
+        self.networkManager = networkManager
+    }
+
+    func detailViewModel() -> PhotoDetailViewModel {
+        return PhotoDetailViewModel(photo: photo, networkManager: networkManager)
     }
 }
