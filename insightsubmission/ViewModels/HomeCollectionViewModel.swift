@@ -53,7 +53,11 @@ class HomeCollectionViewModel {
             switch result {
             case .success(let result):
                 guard let photos = result.photos?.photo else { return }
-                self.images.replace(with: photos)
+
+                // Stripping out photos without a medium and thumbnail sized image for simplicity sake
+                let photosWithImageUrl = photos.filter { $0.urlMedium != nil && $0.urlLargeSquare != nil }
+
+                self.images.replace(with: photosWithImageUrl)
             case .error(let error):
                 // TODO: NSLog and handle error message
                 print("\(error)")
@@ -73,8 +77,8 @@ class HomeCollectionViewModel {
                 case .success(let result):
                     guard let photos = result.photos?.photo else { return }
 
-                    // Stripping out photos without a medium or thumbnail sized image for simplicity sake
-                    let photosWithImageUrl = photos.filter { $0.urlMedium != nil || $0.urlLargeSquare != nil }
+                    // Stripping out photos without a medium and thumbnail sized image for simplicity sake
+                    let photosWithImageUrl = photos.filter { $0.urlMedium != nil && $0.urlLargeSquare != nil }
                     
                     self.images.replace(with: photosWithImageUrl)
                     self.initialLoadComplete = false

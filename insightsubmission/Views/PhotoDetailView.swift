@@ -50,10 +50,14 @@ class PhotoDetailView: UIView {
         containerView.addSubview(dateLabel)
 
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+
+        let margins = layoutMarginsGuide
+        containerView.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
         photoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         photoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        photoImageView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        photoImageView.heightAnchor.constraint(equalTo: containerView.heightAnchor, constant: 0.6).isActive = true
+        photoImageView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        photoImageView.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 0.6).isActive = true
         photoImageView.contentMode = .scaleAspectFit
 
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
