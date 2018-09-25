@@ -69,7 +69,9 @@ class HomeCollectionViewController: UIViewController {
                             guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
 
                             self.networkManager.startDownload(for: photo, at: indexPath) {
-                                self.collectionView.reloadItems(at: [indexPath])
+                                if let _ = self.collectionView.cellForItem(at: indexPath) {
+                                    self.collectionView.reloadItems(at: [indexPath])
+                                }
                             }
                         }
                         return

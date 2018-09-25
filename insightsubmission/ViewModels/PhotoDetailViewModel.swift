@@ -28,21 +28,13 @@ struct PhotoDetailViewModel {
         downloadImage()
         name.value = photo.title
 
-        let timestamp = Double(photo.dateUpload) ?? 0.0 / 1000
-        let dateFromTimestamp = Date(timeIntervalSince1970: TimeInterval(timestamp))
-
-        let formatter = DateFormatter()
-        // initially set the format based on your datepicker date / server String
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        let dateStr = formatter.string(from: dateFromTimestamp)
-        let sourceDate = formatter.date(from: dateStr)
-        formatter.dateFormat = "dd-MM-yyyy HH:mm"
-
         tags.removeAll()
         tags.replace(with: photo.tags.components(separatedBy: " ").filter { $0 != "" })
 
-        date.value = "Uploaded date: \(formatter.string(from: sourceDate!))"
+        date.value = "Uploaded date: \(localDateString(from: photo.dateUpload))"
     }
+
+    // MARK: - Methods
 
     func downloadImage() {
         networkManager.downloadDetailImage(for: photo) { data in
@@ -51,6 +43,19 @@ struct PhotoDetailViewModel {
             }
             self.detailImage.value = image
         }
+    }
+
+    // MARK: - Private methods
+
+    private func localDateString(from timestamp: String) -> String {
+        let timestamp = Double(timestamp) ?? 0.0
+        let dateFromTimestamp = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        let dateString = formatter.string(from: dateFromTimestamp)
+        let sourceDate = formatter.date(from: dateString)
+        formatter.dateFormat = "dd-MM-yyyy HH:mm"
+        return formatter.string(from: sourceDate!)
     }
 }
 
