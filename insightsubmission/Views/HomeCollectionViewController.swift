@@ -117,3 +117,12 @@ extension HomeCollectionViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - UIScrollViewDelegate
+extension HomeCollectionViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if scrollView == collectionView {
+            searchBar.endEditing(true)
+        }
+    }
+}
+
