@@ -13,11 +13,36 @@ struct PhotoDetailViewModel {
     private let photo: Photo
     private let networkManager: NetworkManagerProtocol!
     let detailImage = Observable<UIImage?>(nil)
+    let name = Observable<String>("")
+    let size = Observable<String>("")
+    let resolution = Observable<String>("")
+    let date = Observable<String>("")
+    let tags = MutableObservableArray<String>([])
+//    var tags: [String] = []
 
     init(photo: Photo, networkManager: NetworkManagerProtocol) {
         self.photo = photo
         self.networkManager = networkManager
         downloadImage()
+        name.value = photo.title
+//        size.value = "Resol\(photo.)"
+
+        let timestamp = Double(photo.dateUpload) ?? 0.0 / 1000
+        let dateFromTimestamp = Date(timeIntervalSince1970: TimeInterval(timestamp))
+
+        let formatter = DateFormatter()
+        // initially set the format based on your datepicker date / server String
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        let dateStr = formatter.string(from: dateFromTimestamp)
+        let sourceDate = formatter.date(from: dateStr)
+        formatter.dateFormat = "dd-MM-yyyy HH:mm"
+
+        tags.removeAll()
+        tags.replace(with: photo.tags.components(separatedBy: " "))
+        print("TAGS:: \(tags.count)")
+//        tags = photo.tags.components(separatedBy: " ")
+
+        date.value = "Uploaded date: \(formatter.string(from: sourceDate!))"
     }
 
     func downloadImage() {
@@ -25,8 +50,8 @@ struct PhotoDetailViewModel {
             guard let data = data, let image = UIImage(data: data) else {
                 return
             }
-
             self.detailImage.value = image
         }
     }
 }
+

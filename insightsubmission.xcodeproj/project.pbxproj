@@ -18,6 +18,8 @@
 		984F1559215257C90073C07A /* HomeCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984F1558215257C90073C07A /* HomeCollectionViewModel.swift */; };
 		984F155B215268510073C07A /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984F155A215268510073C07A /* PhotoCollectionViewCell.swift */; };
 		9866B5B6215667AF00E8FB18 /* PhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9866B5B5215667AF00E8FB18 /* PhotoCellViewModel.swift */; };
+		9873510F215A37B1006998E0 /* TagsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9873510D215A37B1006998E0 /* TagsCollectionViewCell.swift */; };
+		98735110215A37B1006998E0 /* TagsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9873510E215A37B1006998E0 /* TagsCollectionViewCell.xib */; };
 		989028F121577DCF001A96A9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989028F021577DCF001A96A9 /* LocationManager.swift */; };
 		989028F32157A086001A96A9 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989028F22157A086001A96A9 /* Notification+Extensions.swift */; };
 		989028F52157A7BC001A96A9 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989028F42157A7BC001A96A9 /* PhotoDetailViewController.swift */; };
@@ -71,6 +73,8 @@
 		984F1558215257C90073C07A /* HomeCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewModel.swift; sourceTree = "<group>"; };
 		984F155A215268510073C07A /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		9866B5B5215667AF00E8FB18 /* PhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCellViewModel.swift; sourceTree = "<group>"; };
+		9873510D215A37B1006998E0 /* TagsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsCollectionViewCell.swift; sourceTree = "<group>"; };
+		9873510E215A37B1006998E0 /* TagsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagsCollectionViewCell.xib; sourceTree = "<group>"; };
 		989028F021577DCF001A96A9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		989028F22157A086001A96A9 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		989028F42157A7BC001A96A9 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
@@ -265,6 +269,8 @@
 				984F155A215268510073C07A /* PhotoCollectionViewCell.swift */,
 				989028F42157A7BC001A96A9 /* PhotoDetailViewController.swift */,
 				98AE460C2158DE21002B9426 /* PhotoDetailView.swift */,
+				9873510D215A37B1006998E0 /* TagsCollectionViewCell.swift */,
+				9873510E215A37B1006998E0 /* TagsCollectionViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -363,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9823940F214E577E0075BBA0 /* LaunchScreen.storyboard in Resources */,
+				98735110215A37B1006998E0 /* TagsCollectionViewCell.xib in Resources */,
 				9823940C214E577E0075BBA0 /* Assets.xcassets in Resources */,
 				9823940A214E577D0075BBA0 /* Main.storyboard in Resources */,
 			);
@@ -464,6 +471,7 @@
 				98AE460721584BED002B9426 /* PhotoDetailViewModel.swift in Sources */,
 				98A9BCA1214FEF7F004154F5 /* FlickrPagedPhotoResult.swift in Sources */,
 				98239405214E577D0075BBA0 /* AppDelegate.swift in Sources */,
+				9873510F215A37B1006998E0 /* TagsCollectionViewCell.swift in Sources */,
 				98239425214E5FF40075BBA0 /* Constants.swift in Sources */,
 				989028F32157A086001A96A9 /* Notification+Extensions.swift in Sources */,
 				98EBA909214E894300AD37E4 /* APIMethod.swift in Sources */,

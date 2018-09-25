@@ -38,7 +38,6 @@ class HomeCollectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.delegate = self
         collectionView.isPrefetchingEnabled = false
         setupUI()
         bindViewModel()
@@ -72,9 +71,20 @@ class HomeCollectionViewController: UIViewController {
                     cellViewModel.image.value = image
                 }
             }
-        }
+        }.dispose(in: bag)
 
-        viewModel.searchString.bidirectionalBind(to: searchBar.reactive.text)
+        // Cell selection
+        collectionView.reactive.selectedItemIndexPath.observeNext { indexPath in
+            guard let cell = self.collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell,
+                let viewModel = cell.viewModel else {
+                return
+            }
+
+            let detailController = PhotoDetailViewController(viewModel: viewModel.detailViewModel())
+            self.navigationController?.pushViewController(detailController, animated: true)
+        }.dispose(in: bag)
+
+        viewModel.searchString.bidirectionalBind(to: searchBar.reactive.text).dispose(in: bag)
 
         viewModel.searchInProgress.observeOn(.main).observeNext { [weak self] value in
             DispatchQueue.main.async {
@@ -99,22 +109,6 @@ class HomeCollectionViewController: UIViewController {
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         collectionView.backgroundColor = .lightGray
    }
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension HomeCollectionViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailController = PhotoDetailViewController()
-
-        guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else {
-            return
-        }
-
-        let detailViewModel = cell.viewModel?.detailViewModel()
-        detailController.viewModel = detailViewModel
-        self.navigationController?.pushViewController(detailController, animated: true)
-    }
 }
 
 // MARK: - UIScrollViewDelegate
