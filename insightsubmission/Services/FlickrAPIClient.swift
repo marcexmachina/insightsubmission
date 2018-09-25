@@ -12,7 +12,7 @@ protocol NetworkManagerProtocol {
     init(session: URLSession)
     func getPhotos(with text: String, completion: @escaping (Result<FlickrPhotosResult>) -> ())
     func getPhotos(latitude: Double, longitude: Double, completion: @escaping (Result<FlickrPhotosResult>) -> ())
-    func startDownload(for photo: Photo, at indexPath: IndexPath)
+    func startDownload(for photo: Photo, at indexPath: IndexPath, completion: @escaping ()->())
     func downloadDetailImage(for photo: Photo, completion: @escaping (Data?)->())
     func url(for text: String) -> URL
     func url(latitude: Double, longitude: Double) -> URL
@@ -86,16 +86,15 @@ struct FlickrAPIClient: NetworkManagerProtocol {
     ///   - photo: photo
     ///   - indexPath: indexPath
     ///   - completion: completion
-    func startDownload(for photo: Photo, at indexPath: IndexPath) {
+    func startDownload(for photo: Photo, at indexPath: IndexPath, completion: @escaping ()->()) {
         guard operationsManager.operationsInProgress[indexPath] == nil else { return }
 
         let downloadOperation = ImageDownloadOperation(photo: photo, size: .largeSquare)
 
         downloadOperation.completionBlock = {
-            if downloadOperation.isCancelled { return }
-
             DispatchQueue.main.async {
                 self.operationsManager.operationsInProgress.removeValue(forKey: indexPath)
+                completion()
             }
         }
         

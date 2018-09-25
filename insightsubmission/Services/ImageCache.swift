@@ -72,17 +72,14 @@ final class ImageCache {
             // Check in-memory cache for image
             if let data = self.imageCache.object(forKey: fileKey as NSString) {
                 result = data as Data
+            } else {
+                // Check caches directory for image
+                let path = self.filePath(for: key)
+                if let data = try? Data(contentsOf: path) {
+                    result = data as Data
+                }
             }
-
-            // Check caches directory for image
-            let path = self.filePath(for: key)
-            if let data = try? Data(contentsOf: path) {
-                result = data as Data
-            }
-
-            DispatchQueue.main.async {
-                completion(result)
-            }
+            completion(result)
         }
     }
 

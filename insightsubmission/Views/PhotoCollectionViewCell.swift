@@ -12,6 +12,7 @@ import Bond
 class PhotoCollectionViewCell: UICollectionViewCell {
     var imageView = UIImageView()
     var viewModel: PhotoCellViewModel? = nil
+    var imageKey: String?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,6 +24,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
 
     func configure(with viewModel: PhotoCellViewModel) {
         self.viewModel = viewModel
+        imageView.image = nil
+        imageKey = viewModel.imageKey
         addSubview(imageView)
         backgroundColor = .white
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -35,6 +38,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
 
     func setupBinding() {
-        viewModel?.image.bind(to: imageView.reactive.image).dispose(in: bag)
+        viewModel?.image.bind(to: imageView.reactive.image)
     }
 }

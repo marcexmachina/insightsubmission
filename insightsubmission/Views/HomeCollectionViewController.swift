@@ -38,8 +38,8 @@ class HomeCollectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.prefetchDataSource = self
         collectionView.delegate = self
+        collectionView.isPrefetchingEnabled = false
         setupUI()
         bindViewModel()
     }
@@ -48,24 +48,30 @@ class HomeCollectionViewController: UIViewController {
 
     private func bindViewModel() {
         // Bind collectionView to datasource
-        viewModel.images.bind(to: collectionView) { array, indexPath, collectionView in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PhotoCollectionViewCell
+
+        viewModel.images.bind(to: collectionView, cellType: PhotoCollectionViewCell.self) { (cell, photo) in
             cell.imageView.image = nil
-            let photo = array[indexPath.item]
             let cellViewModel = self.viewModel.cellViewModel(for: photo)
             cell.configure(with: cellViewModel)
-
-            // Check cache for image, otherwise start download
             let key = photo.thumbnailUrl()!
 
             ImageCache.shared.imageData(key: key) { data in
                 guard let data = data, let image = UIImage(data: data) else {
-                    self.networkManager.startDownload(for: photo, at: indexPath)
+                    DispatchQueue.main.async {
+                        guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+
+                        self.networkManager.startDownload(for: photo, at: indexPath) {
+                            self.collectionView.reloadItems(at: [indexPath])
+                        }
+                    }
                     return
                 }
-                cellViewModel.image.value = image
+
+                // Ensure we're setting the correct image for the correct cell
+                if cellViewModel.imageKey == cell.imageKey {
+                    cellViewModel.image.value = image
+                }
             }
-            return cell
         }
 
         viewModel.searchString.bidirectionalBind(to: searchBar.reactive.text)
@@ -109,26 +115,5 @@ extension HomeCollectionViewController: UICollectionViewDelegate {
         detailController.viewModel = detailViewModel
         self.navigationController?.pushViewController(detailController, animated: true)
     }
-}
-
-// MARK: - UICollectionViewDataSourcePrefetching
-
-extension HomeCollectionViewController: UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            let photo = viewModel.images[indexPath.row]
-            let key = photo.thumbnailUrl()!
-
-            ImageCache.shared.imageData(key: key) { data in
-                // Exit early if image is already cached
-                guard data == nil else { return }
-
-                // Start download of image
-                self.networkManager.startDownload(for: photo, at: indexPath)
-            }
-        }
-    }
-
-
 }
 

@@ -13,10 +13,12 @@ struct PhotoCellViewModel {
     private let photo: Photo
     private let networkManager: NetworkManagerProtocol!
     let image = Observable<UIImage?>(nil)
+    let imageKey: String
 
     init(photo: Photo, networkManager: NetworkManagerProtocol) {
         self.photo = photo
         self.networkManager = networkManager
+        imageKey = photo.id
     }
 
     func detailViewModel() -> PhotoDetailViewModel {
