@@ -28,7 +28,7 @@ final class ImageCache {
         do {
             try fileManager.createDirectory(at: imageCacheUrl, withIntermediateDirectories: true, attributes: nil)
         } catch(let error) {
-            print("\(error)")
+            NSLog("\(error.localizedDescription)")
         }
     }
 
@@ -50,8 +50,7 @@ final class ImageCache {
             do {
                 try imageData.write(to: path)
             } catch(let error) {
-                // TODO: - NSLog here
-                print("\(error)")
+                NSLog("\(error.localizedDescription)")
             }
         }
     }
@@ -123,6 +122,8 @@ final class ImageCache {
         }
     }
 
+
+    /// Remove all objects from both the in-memory and on-disk cache
     func removeAllObjects() {
         queue.async {
             self.imageCache.removeAllObjects()

@@ -34,6 +34,7 @@ class HomeCollectionViewModel {
                 }
         }
 
+        // Observe location update notifications
         NotificationCenter.default.addObserver(self, selector: #selector(searchByLocation(_:)), name: .locationDidUpdate, object: nil)
     }
 
@@ -57,8 +58,7 @@ class HomeCollectionViewModel {
 
                 self.images.replace(with: photosWithImageUrl)
             case .error(let error):
-                // TODO: NSLog and handle error message
-                print("\(error)")
+                NSLog("\(error.localizedDescription)")
             }
         }
     }
@@ -82,8 +82,7 @@ class HomeCollectionViewModel {
 
                 self.images.replace(with: photosWithImageUrl)
             case .error(let error):
-                // TODO: NSLog and handle error message
-                print("\(error)")
+                NSLog("\(error.localizedDescription)")
             }
         }
     }
@@ -106,8 +105,7 @@ class HomeCollectionViewModel {
                     self.images.replace(with: photosWithImageUrl)
                     self.initialLoadComplete = false
                 case .error(let error):
-                    // TODO: NSLog and handle error message
-                    print("\(error)")
+                    NSLog("\(error.localizedDescription)")
                 }
             }
         }

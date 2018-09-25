@@ -60,8 +60,18 @@ struct Photo {
         state = newValue
     }
 
+    /// Want the largeSquare image if available, otherwise medium
+    ///
+    /// - Returns: url
     func thumbnailUrl() -> String? {
         return self.urlLargeSquare ?? self.urlMedium
+    }
+
+    /// Want the medium image if available, otherwise largeSquare
+    ///
+    /// - Returns: url
+    func detailImageUrl() -> String? {
+        return self.urlMedium ?? self.urlLargeSquare
     }
 }
 
