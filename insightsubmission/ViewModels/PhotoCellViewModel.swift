@@ -12,6 +12,7 @@ import Bond
 struct PhotoCellViewModel {
     private let photo: Photo
     private let networkManager: NetworkManagerProtocol!
+    
     let image = Observable<UIImage?>(nil)
     let imageKey: String
 

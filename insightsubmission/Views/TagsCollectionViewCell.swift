@@ -10,22 +10,12 @@ import UIKit
 
 class TagsCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var backingView: UIView!
     @IBOutlet weak var tagLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        backingView.layer.cornerRadius = 4
+        contentView.layer.cornerRadius = 4
+        contentView.layer.opacity = 0.8
+        contentView.backgroundColor = .white
     }
-
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        setNeedsLayout()
-        layoutIfNeeded()
-        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
-        var frame = layoutAttributes.frame
-        frame.size.height = ceil(size.height)
-        layoutAttributes.frame = frame
-        return layoutAttributes
-    }
-
 }

@@ -10,74 +10,56 @@ import Foundation
 
 protocol NetworkManagerProtocol {
     init(session: URLSession)
-    func getPhotos(with text: String, completion: @escaping (Result<FlickrPhotosResult>) -> ())
+    func getPhotos(text: String, completion: @escaping (Result<FlickrPhotosResult>) -> ())
+    func getPhotos(tag: String, completion: @escaping (Result<FlickrPhotosResult>) -> ())
     func getPhotos(latitude: Double, longitude: Double, completion: @escaping (Result<FlickrPhotosResult>) -> ())
     func startDownload(for photo: Photo, at indexPath: IndexPath, completion: @escaping ()->())
     func downloadDetailImage(for photo: Photo, completion: @escaping (Data?)->())
-    func url(for text: String) -> URL
+    func url(text: String) -> URL
     func url(latitude: Double, longitude: Double) -> URL
 }
 
 struct FlickrAPIClient: NetworkManagerProtocol {
     private let session: URLSession
+
     let operationsManager = PhotosOperationsManager()
 
     init(session: URLSession) {
         self.session = session
     }
 
-    func getPhotos(with text: String, completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
-        let requestUrl = url(for: text)
+    /// Search Flickr API for images with text
+    ///
+    /// - Parameters:
+    ///   - text: text
+    ///   - completion: completion
+    func getPhotos(text: String, completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
+        let requestUrl = url(text: text)
 
-        session.dataTask(with: requestUrl) { data, response, error in
-            guard let data = data, error == nil else {
-                // TODO: NSLog
-                return
-            }
-
-            let statusCode = (response as! HTTPURLResponse).statusCode
-            guard 200...299 ~= statusCode else {
-                // TODO: NSLog
-                completion(.error(FlickrError.serverResponseError))
-                return
-            }
-
-            do {
-                let flickrPhotosResult = try JSONDecoder().decode(FlickrPhotosResult.self, from: data)
-                // TODO: NSLog
-                completion(.success(flickrPhotosResult))
-            } catch let error {
-                // TODO: NSLog
-                completion(.error(error))
-            }
-        }.resume()
+        performDataTask(requestUrl, session, completion)
     }
 
+    /// Search Flickr API for images with latitude, longitude values
+    ///
+    /// - Parameters:
+    ///   - latitude: latitude
+    ///   - longitude: longitude
+    ///   - completion: completion
     func getPhotos(latitude: Double, longitude: Double, completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
         let requestUrl = url(latitude: latitude, longitude: longitude)
 
-        session.dataTask(with: requestUrl) { data, response, error in
-            guard let data = data, error == nil else {
-                // TODO: NSLog
-                return
-            }
+        performDataTask(requestUrl, session, completion)
+    }
 
-            let statusCode = (response as! HTTPURLResponse).statusCode
-            guard 200...299 ~= statusCode else {
-                // TODO: NSLog
-                completion(.error(FlickrError.serverResponseError))
-                return
-            }
+    /// Search Flickr API for images tagged with string
+    ///
+    /// - Parameters:
+    ///   - tag: tag
+    ///   - completion: completion
+    func getPhotos(tag: String, completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
+        let requestUrl = url(tag: tag)
 
-            do {
-                let flickrPhotosResult = try JSONDecoder().decode(FlickrPhotosResult.self, from: data)
-                // TODO: NSLog
-                completion(.success(flickrPhotosResult))
-            } catch let error {
-                // TODO: NSLog
-                completion(.error(error))
-            }
-        }.resume()
+        performDataTask(requestUrl, session, completion)
     }
 
     /// Start a download operation for thumbnail images
@@ -124,7 +106,7 @@ struct FlickrAPIClient: NetworkManagerProtocol {
 }
 
 extension NetworkManagerProtocol {
-    func url(for text: String) -> URL {
+    func url(text: String) -> URL {
         var components = requestComponents()
 
         let textQueryItem = URLQueryItem(name: "text", value: text)
@@ -147,6 +129,17 @@ extension NetworkManagerProtocol {
         return components.url!
     }
 
+    func url(tag: String) -> URL {
+        var components = requestComponents()
+
+        let tagQueryItem = URLQueryItem(name: "tags", value: tag)
+
+        var queryItems = commonQueryItems()
+        queryItems.append(tagQueryItem)
+        components.queryItems = queryItems
+        return components.url!
+    }
+
     private func commonQueryItems() -> [URLQueryItem] {
         return [
             URLQueryItem(name: "method", value: APIMethod.search.rawValue),
@@ -164,5 +157,27 @@ extension NetworkManagerProtocol {
         components.host = Constants.Flickr.baseURL
         components.path = Constants.Flickr.path
         return components
+    }
+
+    fileprivate func performDataTask(_ requestUrl: URL, _ session: URLSession,  _ completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
+        session.dataTask(with: requestUrl) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(.error(FlickrError.noData))
+                return
+            }
+
+            let statusCode = (response as! HTTPURLResponse).statusCode
+            guard 200...299 ~= statusCode else {
+                completion(.error(FlickrError.serverResponseError))
+                return
+            }
+
+            do {
+                let flickrPhotosResult = try JSONDecoder().decode(FlickrPhotosResult.self, from: data)
+                completion(.success(flickrPhotosResult))
+            } catch let error {
+                completion(.error(error))
+            }
+        }.resume()
     }
 }

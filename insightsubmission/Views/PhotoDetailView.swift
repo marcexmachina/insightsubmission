@@ -10,9 +10,13 @@ import UIKit
 
 class PhotoDetailView: UIView {
     private var viewModel: PhotoDetailViewModel!
+
     var containerView: UIView!
     var photoImageView: UIImageView!
-
+    var sizeLabel: UILabel!
+    var resolutionLabel: UILabel!
+    var dateLabel: UILabel!
+    
     var nameLabel: UILabel = {
         var label = UILabel()
         label.numberOfLines = 0
@@ -21,12 +25,7 @@ class PhotoDetailView: UIView {
         return label
     }()
 
-    var sizeLabel: UILabel!
-    var resolutionLabel: UILabel!
-    var dateLabel: UILabel!
-    var tagButtons: [UIButton] = []
-
-    var tagsStackView: UIStackView!
+    // MARK: - Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,20 +40,15 @@ class PhotoDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Methods
+
     func configure(with viewModel: PhotoDetailViewModel) {
         self.viewModel = viewModel
         setupBinding()
-//        tagButtons = viewModel.tags.map { tag -> UIButton in
-//            let button = UIButton()
-//            button.setTitle(tag, for: .normal)
-//            button.backgroundColor = .white
-//            button.setTitleColor(.black, for: .normal)
-//            return button
-//        }
-
-        tagsStackView = UIStackView(arrangedSubviews: tagButtons)
         setupInterface()
     }
+
+    // MARK: - Private Methods
 
     private func setupBinding() {
         viewModel.detailImage.bind(to: photoImageView.reactive.image)
@@ -69,21 +63,16 @@ class PhotoDetailView: UIView {
         containerView.addSubview(sizeLabel)
         containerView.addSubview(resolutionLabel)
         containerView.addSubview(dateLabel)
-        containerView.addSubview(tagsStackView)
 
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        tagsStackView.translatesAutoresizingMaskIntoConstraints = false
 
         let margins = layoutMarginsGuide
         containerView.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
-
-        tagsStackView.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -8).isActive = true
-        tagsStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        tagsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16).isActive = true
 
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.bottomAnchor.constraint(equalTo: tagsStackView.topAnchor, constant: -8).isActive = true
+        dateLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8).isActive = true
         dateLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor).isActive = true
         dateLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8).isActive = true
         dateLabel.textColor = .lightGray
@@ -98,17 +87,5 @@ class PhotoDetailView: UIView {
         photoImageView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         photoImageView.bottomAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -8).isActive = true
         photoImageView.contentMode = .scaleAspectFit
-
-        tagsStackView.axis = .horizontal
-        tagsStackView.distribution = .fillEqually
-        tagsStackView.alignment = .center
-        tagsStackView.spacing = 5
-
-//        print("Number buttons:: \(tagButtons.count)")
     }
-
-    private func setupButtons() {
-
-    }
-
 }

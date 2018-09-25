@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Operation to download image from Flickr
 class ImageDownloadOperation: Operation {
     var photo: Photo
     var size: Size

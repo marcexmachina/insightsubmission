@@ -10,4 +10,5 @@ import Foundation
 
 enum FlickrError: Error {
     case serverResponseError
+    case noData
 }

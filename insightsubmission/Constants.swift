@@ -17,7 +17,6 @@ struct Constants {
         static let format = "json"
         static let JSONCallback = "1"
         static let safeSearch = "1"
-//        static let secret = "f1e4b232ec4e6134"
 
         enum Extras: String {
             case description

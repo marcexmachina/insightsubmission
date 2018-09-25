@@ -26,7 +26,7 @@ class FlickrAPIClientTests: XCTestCase {
     
     func testTextQueryUrlString() {
         let expected = baseUrl.appending("&text=test")
-        let url = sut.url(for: "test")
+        let url = sut.url("test")
         XCTAssert(url.absoluteString == expected, "URL for search with text is not correct")
     }
 

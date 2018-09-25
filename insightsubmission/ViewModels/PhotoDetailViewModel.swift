@@ -12,20 +12,21 @@ import Bond
 struct PhotoDetailViewModel {
     private let photo: Photo
     private let networkManager: NetworkManagerProtocol!
+
     let detailImage = Observable<UIImage?>(nil)
     let name = Observable<String>("")
     let size = Observable<String>("")
     let resolution = Observable<String>("")
     let date = Observable<String>("")
     let tags = MutableObservableArray<String>([])
-//    var tags: [String] = []
+
+    // MARK: - Lifecycle
 
     init(photo: Photo, networkManager: NetworkManagerProtocol) {
         self.photo = photo
         self.networkManager = networkManager
         downloadImage()
         name.value = photo.title
-//        size.value = "Resol\(photo.)"
 
         let timestamp = Double(photo.dateUpload) ?? 0.0 / 1000
         let dateFromTimestamp = Date(timeIntervalSince1970: TimeInterval(timestamp))
@@ -38,9 +39,7 @@ struct PhotoDetailViewModel {
         formatter.dateFormat = "dd-MM-yyyy HH:mm"
 
         tags.removeAll()
-        tags.replace(with: photo.tags.components(separatedBy: " "))
-        print("TAGS:: \(tags.count)")
-//        tags = photo.tags.components(separatedBy: " ")
+        tags.replace(with: photo.tags.components(separatedBy: " ").filter { $0 != "" })
 
         date.value = "Uploaded date: \(formatter.string(from: sourceDate!))"
     }

@@ -18,6 +18,8 @@ class HomeCollectionViewModel {
     var images = MutableObservableArray<Photo>([])
     var searchString = Observable<String?>("")
     var searchInProgress = Observable<Bool>(false)
+
+    // MARK: - Lifecycle
     
     init(networkManager: NetworkManagerProtocol, locationManager: LocationManager) {
         self.networkManager = networkManager
@@ -25,7 +27,7 @@ class HomeCollectionViewModel {
 
         _ = searchString
             .filter { $0!.count > 3 }
-            .throttle(seconds: 1)
+            .throttle(seconds: 0.3)
             .observeNext { [unowned self] text in
                 if let text = text {
                     self.search(text)
@@ -41,6 +43,26 @@ class HomeCollectionViewModel {
         return PhotoCellViewModel(photo: photo, networkManager: networkManager)
     }
 
+    func images(for tag: String) {
+        searchInProgress.value = true
+
+        networkManager.getPhotos(tag: tag) { result in
+            self.searchInProgress.value = false
+            switch result {
+            case .success(let result):
+                guard let photos = result.photos?.photo else { return }
+
+                // Stripping out photos without a medium and thumbnail sized image for simplicity sake
+                let photosWithImageUrl = photos.filter { $0.urlMedium != nil && $0.urlLargeSquare != nil }
+
+                self.images.replace(with: photosWithImageUrl)
+            case .error(let error):
+                // TODO: NSLog and handle error message
+                print("\(error)")
+            }
+        }
+    }
+
     // MARK: - Private methods
 
     /// Perform search of API with text
@@ -48,7 +70,8 @@ class HomeCollectionViewModel {
     /// - Parameter text: search text
     private func search(_ text: String) {
         searchInProgress.value = true
-        networkManager.getPhotos(with: text) { result in
+        
+        networkManager.getPhotos(text: text) { result in
             self.searchInProgress.value = false
             switch result {
             case .success(let result):
