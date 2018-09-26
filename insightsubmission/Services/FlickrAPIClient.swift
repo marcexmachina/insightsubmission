@@ -92,14 +92,14 @@ struct FlickrAPIClient {
     func downloadDetailImage(for photo: Photo, completion: @escaping (Data?)->()) {
         DispatchQueue.global().async {
             guard let urlString = photo.urlMedium ?? photo.urlLargeSquare,
-                let url = URL(string: urlString),
-                let data = try? Data(contentsOf: url) else {
-                    completion(nil)
+                let url = URL(string: urlString) else {
                     return
             }
 
-            DispatchQueue.main.async {
-                completion(data)
+            self.session.loadData(with: url) { data, _, _ in
+                DispatchQueue.main.async {
+                    completion(data)
+                }
             }
         }
     }
