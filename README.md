@@ -26,24 +26,36 @@ as the selected tag.
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+To run all the automated test suites, browse to the "Test Navigator" in Xcode and select the run button for the target `insightsubmissionTests`
 
 ### Break down into end to end tests
 
-Explain what these tests test and why
+To run individual test suites, select the run button beside the suit.
 
+The available test suites are
+
+API Client Tests
 ```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
+FlickrAPIClientTests
 ```
 
+Caching tests
+```
+ImageCacheTests
+```
+
+Integration Tests
+```
+FlickrIntegrationTests
+```
+
+Model Tests
+```
+FlickrPhotosResultTests
+```
+```
+PhotoTests
+```
 ## Built With
 
 * [SwiftBond](https://github.com/DeclarativeHub/Bond) - A Swift binding framework.
