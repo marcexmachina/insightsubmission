@@ -11,9 +11,9 @@ import UIKit
 class PhotoDetailView: UIView {
     private var viewModel: PhotoDetailViewModel!
 
-    var containerView: UIView!
-    var photoImageView: UIImageView!
-    var dateLabel: UILabel!
+    var containerView: UIView
+    var photoImageView: UIImageView
+    var dateLabel: UILabel
 
     var nameLabel: UILabel = {
         var label = UILabel()
@@ -26,10 +26,10 @@ class PhotoDetailView: UIView {
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
-        super.init(frame: frame)
         containerView = UIView(frame: frame)
         photoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height / 2))
         dateLabel = UILabel()
+        super.init(frame: frame)
     }
 
     required init?(coder aDecoder: NSCoder) {

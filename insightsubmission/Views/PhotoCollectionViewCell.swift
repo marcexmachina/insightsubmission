@@ -10,13 +10,14 @@ import UIKit
 import Bond
 
 class PhotoCollectionViewCell: UICollectionViewCell {
-    var imageView = UIImageView()
+    var imageView: UIImageView
     var viewModel: PhotoCellViewModel? = nil
     var imageKey: String?
 
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
+        imageView = UIImageView()
         super.init(frame: frame)
     }
 

@@ -93,6 +93,7 @@ struct FlickrAPIClient {
         DispatchQueue.global().async {
             guard let urlString = photo.urlMedium ?? photo.urlLargeSquare,
                 let url = URL(string: urlString) else {
+                    completion(nil)
                     return
             }
 
