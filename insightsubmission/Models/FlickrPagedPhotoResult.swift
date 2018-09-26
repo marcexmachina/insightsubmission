@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FlickrPagedPhotoResult: Decodable {
+struct FlickrPagedPhotoResult: Codable {
     let page: Int
     let pages: Int
     let perpage: Int

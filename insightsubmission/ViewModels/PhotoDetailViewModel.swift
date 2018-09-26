@@ -11,7 +11,7 @@ import Bond
 
 struct PhotoDetailViewModel {
     private let photo: Photo
-    private let networkManager: NetworkManagerProtocol!
+    private let networkManager: FlickrAPIClient!
 
     let detailImage = Observable<UIImage?>(nil)
     let name = Observable<String>("")
@@ -22,7 +22,7 @@ struct PhotoDetailViewModel {
 
     // MARK: - Lifecycle
 
-    init(photo: Photo, networkManager: NetworkManagerProtocol) {
+    init(photo: Photo, networkManager: FlickrAPIClient) {
         self.photo = photo
         self.networkManager = networkManager
         downloadImage()

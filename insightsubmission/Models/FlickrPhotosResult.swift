@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FlickrPhotosResult: Decodable {
+struct FlickrPhotosResult: Codable {
     let stat: String
     let photos: FlickrPagedPhotoResult?
 }

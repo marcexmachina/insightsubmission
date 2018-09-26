@@ -19,12 +19,12 @@ protocol NetworkManagerProtocol {
     func url(latitude: Double, longitude: Double) -> URL
 }
 
-struct FlickrAPIClient: NetworkManagerProtocol {
-    private let session: URLSession
+struct FlickrAPIClient {
+    private let session: NetworkSession
 
     let operationsManager = PhotosOperationsManager()
 
-    init(session: URLSession) {
+    init(session: NetworkSession) {
         self.session = session
     }
 
@@ -105,7 +105,8 @@ struct FlickrAPIClient: NetworkManagerProtocol {
     }
 }
 
-extension NetworkManagerProtocol {
+//extension NetworkManagerProtocol {
+extension FlickrAPIClient {
     func url(text: String) -> URL {
         var components = requestComponents()
 
@@ -159,8 +160,8 @@ extension NetworkManagerProtocol {
         return components
     }
 
-    fileprivate func performDataTask(_ requestUrl: URL, _ session: URLSession,  _ completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
-        session.dataTask(with: requestUrl) { data, response, error in
+    fileprivate func performDataTask(_ requestUrl: URL, _ session: NetworkSession,  _ completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
+        session.loadData(with: requestUrl) { data, response, error in
             guard let data = data, error == nil else {
                 completion(.error(FlickrError.noData))
                 return
@@ -178,6 +179,6 @@ extension NetworkManagerProtocol {
             } catch let error {
                 completion(.error(error))
             }
-        }.resume()
+        }
     }
 }

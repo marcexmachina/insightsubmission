@@ -11,12 +11,12 @@ import Bond
 
 struct PhotoCellViewModel {
     private let photo: Photo
-    private let networkManager: NetworkManagerProtocol!
+    private let networkManager: FlickrAPIClient!
     
     let image = Observable<UIImage?>(nil)
     let imageKey: String
 
-    init(photo: Photo, networkManager: NetworkManagerProtocol) {
+    init(photo: Photo, networkManager: FlickrAPIClient) {
         self.photo = photo
         self.networkManager = networkManager
         imageKey = photo.id

@@ -11,7 +11,7 @@ import CoreLocation
 import Bond
 
 class HomeCollectionViewModel {
-    private let networkManager: NetworkManagerProtocol!
+    private let networkManager: FlickrAPIClient!
     private let locationManager: LocationManager!
     private var initialLoadComplete: Bool = false
 
@@ -21,7 +21,7 @@ class HomeCollectionViewModel {
 
     // MARK: - Lifecycle
     
-    init(networkManager: NetworkManagerProtocol, locationManager: LocationManager) {
+    init(networkManager: FlickrAPIClient, locationManager: LocationManager) {
         self.networkManager = networkManager
         self.locationManager = locationManager
 

@@ -32,7 +32,7 @@ class ImageCacheTests: XCTestCase {
         var resultData: Data?
 
         // Adding this to wait for caching on backgroundqueue to finish
-        sleep(1)
+        sleep(2)
 
         ImageCache.shared.imageDataFromMemory(for: imageUrlString) { data in
             resultData = data
@@ -47,8 +47,8 @@ class ImageCacheTests: XCTestCase {
         let expectation = self.expectation(description: "Data found")
         var resultData: Data?
 
-        // Adding this to wait for caching on backgroundqueue to finish
-        sleep(1)
+        // Adding this to wait for caching on background queue to finish
+        sleep(2)
         
         ImageCache.shared.imageDataFromDisk(for: imageUrlString) { data in
             resultData = data

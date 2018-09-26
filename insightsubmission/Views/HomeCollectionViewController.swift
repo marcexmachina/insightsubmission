@@ -14,7 +14,7 @@ protocol TagSearchDelegate: class {
 
 class HomeCollectionViewController: UIViewController {
 
-    private let networkManager: NetworkManagerProtocol!
+    private let networkManager: FlickrAPIClient!
     private let viewModel: HomeCollectionViewModel!
 
     let collectionView: UICollectionView!
