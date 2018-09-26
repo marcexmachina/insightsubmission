@@ -7,27 +7,67 @@
 //
 
 import XCTest
+@testable import insightsubmission
 
 class FlickrIntegrationTests: XCTestCase {
 
+    var sut: FlickrAPIClient!
+
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+        sut = FlickrAPIClient(session: URLSession.shared)
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
+        super.tearDown()
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testResponseNotNil_givenLatitudeLongitude() {
+        let expectation = self.expectation(description: "Response not nil")
+        var success = false
+        sut.getPhotos(latitude: 0, longitude: 0) { result in
+            switch result {
+            case .success(let photosResult):
+                success = photosResult.photos != nil
+                expectation.fulfill()
+            default:
+                success = false
+            }
         }
+        waitForExpectations(timeout: 10, handler: nil)
+        XCTAssert(success, "Response not successful")
     }
 
+    func testResponseNotNil_givenText() {
+        let expectation = self.expectation(description: "Response not nil")
+        var success = false
+        sut.getPhotos(text: "test") { result in
+            switch result {
+            case .success(let photosResult):
+                success = photosResult.photos != nil
+                expectation.fulfill()
+            default:
+                success = false
+            }
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+        XCTAssert(success, "Response not successful")
+    }
+
+    func testResponseNotNil_givenTag() {
+        let expectation = self.expectation(description: "Response not nil")
+        var success = false
+        sut.getPhotos(tag: "test") { result in
+            switch result {
+            case .success(let photosResult):
+                success = photosResult.photos != nil
+                expectation.fulfill()
+            default:
+                success = false
+            }
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+        XCTAssert(success, "Response not successful")
+    }
 }
