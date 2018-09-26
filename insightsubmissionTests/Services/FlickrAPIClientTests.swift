@@ -187,4 +187,120 @@ class FlickrAPIClientTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
         XCTAssert(isSuccess == false, "Result not expected error")
     }
+
+    func testSearchLatitudeLongitude_NoDataError() {
+        let expectation = self.expectation(description: "No Data Error")
+
+        let url = URL(fileURLWithPath: "test")
+        mockSession.data =  nil
+        mockSession.response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
+
+        var isSuccess = false
+        sut.getPhotos(latitude: 0, longitude: 0) { result in
+            switch result {
+            case .success(_):
+                isSuccess = true
+            case .error(let responseError as FlickrError):
+                if case FlickrError.noData = responseError {
+                    isSuccess = false
+                } else {
+                    isSuccess = true
+                }
+            default:
+                // Setting this to true to fail assertion in this case
+                isSuccess = true
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+        XCTAssert(isSuccess == false, "Result not expected error")
+    }
+
+    func testSearchLatitudeLongitude_ServerResponseError() {
+        let expectation = self.expectation(description: "Server Response Error")
+
+        let mockResult = FlickrPhotosResult(stat: "500", photos: nil)
+        let url = URL(fileURLWithPath: "test")
+        mockSession.data =  try? JSONEncoder().encode(mockResult)
+        mockSession.response = HTTPURLResponse(url: url, statusCode: 500, httpVersion: nil, headerFields: nil)
+
+        var isSuccess = false
+        sut.getPhotos(latitude: 0, longitude: 0) { result in
+            switch result {
+            case .success(_):
+                isSuccess = true
+            case .error(let responseError as FlickrError):
+                if case FlickrError.serverResponseError = responseError {
+                    isSuccess = false
+                } else {
+                    // Setting this to true to fail assertion in this case
+                    isSuccess = true
+                }
+            default:
+                // Setting this to true to fail assertion in this case
+                isSuccess = true
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+        XCTAssert(isSuccess == false, "Result not expected error")
+    }
+
+    func testSearchTag_NoDataError() {
+        let expectation = self.expectation(description: "No Data Error")
+
+        let url = URL(fileURLWithPath: "test")
+        mockSession.data =  nil
+        mockSession.response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
+
+        var isSuccess = false
+        sut.getPhotos(tag: "test") { result in
+            switch result {
+            case .success(_):
+                isSuccess = true
+            case .error(let responseError as FlickrError):
+                if case FlickrError.noData = responseError {
+                    isSuccess = false
+                } else {
+                    isSuccess = true
+                }
+            default:
+                // Setting this to true to fail assertion in this case
+                isSuccess = true
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+        XCTAssert(isSuccess == false, "Result not expected error")
+    }
+
+    func testSearchTag_ServerResponseError() {
+        let expectation = self.expectation(description: "Server Response Error")
+
+        let mockResult = FlickrPhotosResult(stat: "500", photos: nil)
+        let url = URL(fileURLWithPath: "test")
+        mockSession.data =  try? JSONEncoder().encode(mockResult)
+        mockSession.response = HTTPURLResponse(url: url, statusCode: 500, httpVersion: nil, headerFields: nil)
+
+        var isSuccess = false
+        sut.getPhotos(tag: "test") { result in
+            switch result {
+            case .success(_):
+                isSuccess = true
+            case .error(let responseError as FlickrError):
+                if case FlickrError.serverResponseError = responseError {
+                    isSuccess = false
+                } else {
+                    // Setting this to true to fail assertion in this case
+                    isSuccess = true
+                }
+            default:
+                // Setting this to true to fail assertion in this case
+                isSuccess = true
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+        XCTAssert(isSuccess == false, "Result not expected error")
+    }
 }
