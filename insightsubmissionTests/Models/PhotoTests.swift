@@ -29,32 +29,4 @@ class PhotoTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-
-    func testIsPublicIsTrue() {
-        do {
-            let flickrResponse: FlickrPhotosResult = try JSONDecoder().decode(FlickrPhotosResult.self, from: jsonData)
-            XCTAssert((flickrResponse.photos?.photo.first!.isPublic)!, "Photo.isPublic value incorrect")
-        } catch(let error) {
-            XCTFail("\(error)")
-        }
-    }
-
-    func testIsFriendIsFalse() {
-        do {
-            let flickrResponse: FlickrPhotosResult = try JSONDecoder().decode(FlickrPhotosResult.self, from: jsonData)
-            XCTAssert((flickrResponse.photos?.photo.first!.isFriend)! == false, "Photo.isFriend value incorrect")
-        } catch(let error) {
-            XCTFail("\(error)")
-        }
-    }
-
-    func testIsFamilyIsFalse() {
-        do {
-            let flickrResponse: FlickrPhotosResult = try JSONDecoder().decode(FlickrPhotosResult.self, from: jsonData)
-            XCTAssert((flickrResponse.photos?.photo.first!.isFamily)! == false, "Photo.isFamily value incorrect")
-        } catch(let error) {
-            XCTFail("\(error)")
-        }
-    }
-    
 }

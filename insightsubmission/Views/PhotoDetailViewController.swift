@@ -95,7 +95,12 @@ class PhotoDetailViewController: UIViewController, UICollectionViewDelegateFlowL
         }.dispose(in: bag)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    // MARK: - UICollectionViewDelegateFlowLayout
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+
         let calculatedSize = viewModel.tags[indexPath.row].size(withAttributes: nil)
         return CGSize(width: calculatedSize.width + 12, height: calculatedSize.height + 12)
     }

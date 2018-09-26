@@ -16,11 +16,15 @@ struct PhotoCellViewModel {
     let image = Observable<UIImage?>(nil)
     let imageKey: String
 
+    // MARK: - Lifecycle
+
     init(photo: Photo, networkManager: FlickrAPIClient) {
         self.photo = photo
         self.networkManager = networkManager
         imageKey = photo.id
     }
+
+    // MARK: - Methods
 
     func detailViewModel() -> PhotoDetailViewModel {
         return PhotoDetailViewModel(photo: photo, networkManager: networkManager)

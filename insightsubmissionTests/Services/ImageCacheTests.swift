@@ -48,7 +48,8 @@ class ImageCacheTests: XCTestCase {
         var resultData: Data?
 
         // Adding this to wait for caching on background queue to finish
-        sleep(2)
+        // Saving on disk can be slow
+        sleep(4)
         
         ImageCache.shared.imageDataFromDisk(for: imageUrlString) { data in
             resultData = data

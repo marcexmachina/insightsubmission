@@ -21,14 +21,7 @@ enum Size: String {
 
 struct Photo {
     let id: String
-    let owner: String
-    let secret: String
-    let server: String
-    let farm: Int
     let title: String
-    let isPublic: Bool
-    let isFriend: Bool
-    let isFamily: Bool
     let urlLargeSquare: String?
     let urlMedium: String?
     let heightOriginal: String?
@@ -40,14 +33,7 @@ struct Photo {
 
     enum CodingKeys: String, CodingKey {
         case id
-        case owner
-        case secret
-        case server
-        case farm
         case title
-        case isPublic = "ispublic"
-        case isFriend = "isfriend"
-        case isFamily = "isfamily"
         case urlLargeSquare = "url_q"
         case urlMedium = "url_m"
         case heightOriginal = "height_o"
@@ -79,14 +65,7 @@ extension Photo: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
-        owner = try container.decode(String.self, forKey: .owner)
-        secret = try container.decode(String.self, forKey: .secret)
-        server = try container.decode(String.self, forKey: .server)
-        farm = try container.decode(Int.self, forKey: .farm)
         title = try container.decode(String.self, forKey: .title)
-        isPublic = try container.decode(Int.self, forKey: .isPublic) == 1 ? true : false
-        isFriend = try container.decode(Int.self, forKey: .isFriend) == 1 ? true : false
-        isFamily = try container.decode(Int.self, forKey: .isFamily) == 1 ? true : false
         urlLargeSquare = try container.decodeIfPresent(String.self, forKey: .urlLargeSquare)
         urlMedium = try container.decodeIfPresent(String.self, forKey: .urlMedium)
         heightOriginal = try container.decodeIfPresent(String.self, forKey: .heightOriginal)

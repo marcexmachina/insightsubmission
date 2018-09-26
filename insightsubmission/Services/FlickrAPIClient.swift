@@ -160,7 +160,7 @@ extension FlickrAPIClient {
         return components
     }
 
-    fileprivate func performDataTask(_ requestUrl: URL, _ session: NetworkSession,  _ completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
+    private func performDataTask(_ requestUrl: URL, _ session: NetworkSession,  _ completion: @escaping (Result<FlickrPhotosResult>) -> ()) {
         session.loadData(with: requestUrl) { data, response, error in
             guard let data = data, error == nil else {
                 completion(.error(FlickrError.noData))
