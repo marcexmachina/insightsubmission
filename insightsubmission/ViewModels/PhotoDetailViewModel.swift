@@ -34,17 +34,6 @@ struct PhotoDetailViewModel {
         date.value = "Uploaded date: \(localDateString(from: photo.dateUpload))"
     }
 
-    // MARK: - Methods
-
-    func downloadImage() {
-        networkManager.downloadDetailImage(for: photo) { data in
-            guard let data = data, let image = UIImage(data: data) else {
-                return
-            }
-            self.detailImage.value = image
-        }
-    }
-
     // MARK: - Private methods
 
     private func localDateString(from timestamp: String) -> String {
@@ -56,6 +45,15 @@ struct PhotoDetailViewModel {
         let sourceDate = formatter.date(from: dateString)
         formatter.dateFormat = "dd-MM-yyyy HH:mm"
         return formatter.string(from: sourceDate!)
+    }
+
+    private func downloadImage() {
+        networkManager.downloadDetailImage(for: photo) { data in
+            guard let data = data, let image = UIImage(data: data) else {
+                return
+            }
+            self.detailImage.value = image
+        }
     }
 }
 

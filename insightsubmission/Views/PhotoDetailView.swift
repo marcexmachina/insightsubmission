@@ -13,10 +13,8 @@ class PhotoDetailView: UIView {
 
     var containerView: UIView!
     var photoImageView: UIImageView!
-    var sizeLabel: UILabel!
-    var resolutionLabel: UILabel!
     var dateLabel: UILabel!
-    
+
     var nameLabel: UILabel = {
         var label = UILabel()
         label.numberOfLines = 0
@@ -31,8 +29,6 @@ class PhotoDetailView: UIView {
         super.init(frame: frame)
         containerView = UIView(frame: frame)
         photoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height / 2))
-        sizeLabel = UILabel()
-        resolutionLabel = UILabel()
         dateLabel = UILabel()
     }
 
@@ -60,8 +56,6 @@ class PhotoDetailView: UIView {
         addSubview(containerView)
         containerView.addSubview(photoImageView)
         containerView.addSubview(nameLabel)
-        containerView.addSubview(sizeLabel)
-        containerView.addSubview(resolutionLabel)
         containerView.addSubview(dateLabel)
 
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
