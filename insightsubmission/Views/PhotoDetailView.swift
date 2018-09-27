@@ -11,9 +11,9 @@ import UIKit
 class PhotoDetailView: UIView {
     private var viewModel: PhotoDetailViewModel!
 
-    var containerView: UIView
-    var photoImageView: UIImageView
-    var dateLabel: UILabel
+    let containerView: UIView
+    let photoImageView: UIImageView
+    let dateLabel: UILabel
 
     var nameLabel: UILabel = {
         var label = UILabel()

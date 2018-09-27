@@ -10,7 +10,7 @@ import UIKit
 import Bond
 
 class PhotoCollectionViewCell: UICollectionViewCell {
-    var imageView: UIImageView
+    let imageView: UIImageView
     var viewModel: PhotoCellViewModel? = nil
     var imageKey: String?
 
