@@ -89,7 +89,7 @@ class PhotoDetailViewController: UIViewController, UICollectionViewDelegateFlowL
         collectionView
             .reactive
             .selectedItemIndexPath
-            .observeNext { indexPath in
+            .observeNext { [unowned self] indexPath in
                 self.delegate?.search(tag: self.viewModel.tags[indexPath.row])
                 _ = self.navigationController?.popViewController(animated: true)
         }.dispose(in: bag)
